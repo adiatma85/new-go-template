@@ -16,7 +16,7 @@ type RedisClient struct {
 }
 
 // Return the instance of RedisClient
-func New(host, port, password string) (storage.Service, error) {
+func New(host, port string) (storage.Service, error) {
 	pool := &redis.Pool{
 		MaxIdle:     10,
 		IdleTimeout: 240 * time.Second,
