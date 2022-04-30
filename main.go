@@ -10,8 +10,6 @@ import (
 )
 
 func main() {
-	// Reference for this project --> https://intersog.com/blog/how-to-write-a-custom-url-shortener-using-golang-and-redis/
-
 	configuration, err := config.FromFile("./configuration.json")
 	if err != nil {
 		log.Fatal(err)
