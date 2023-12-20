@@ -1,19 +1,27 @@
 package domain
 
 import (
+	"github.com/adiatma85/own-go-sdk/log"
+	"github.com/adiatma85/own-go-sdk/parser"
+	"github.com/adiatma85/own-go-sdk/redis"
+	"github.com/adiatma85/own-go-sdk/sql"
 	"github.com/adiatma85/url-shortener/src/business/domain/user"
-	"github.com/adiatma85/url-shortener/src/utils"
-	"gorm.io/gorm"
 )
 
 type Domain struct {
 	User user.Interface
 }
 
-func Init(db *gorm.DB, util *utils.Utils) *Domain {
+type InitParam struct {
+	Log   log.Interface
+	Db    sql.Interface
+	Json  parser.JSONInterface
+	Redis redis.Interface
+}
+
+func Init(param InitParam) *Domain {
 	domain := &Domain{
-		User: user.Init(db, util.QueryBuilder),
-		// Url dan sebagainya nanti di sini
+		User: user.Init(user.InitParam{Log: param.Log, Db: param.Db, Json: param.Json, Redis: param.Redis}),
 	}
 
 	return domain

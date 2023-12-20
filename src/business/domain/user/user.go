@@ -3,73 +3,80 @@ package user
 import (
 	"context"
 
+	"github.com/adiatma85/own-go-sdk/codes"
+	"github.com/adiatma85/own-go-sdk/errors"
+	"github.com/adiatma85/own-go-sdk/log"
+	"github.com/adiatma85/own-go-sdk/parser"
+	"github.com/adiatma85/own-go-sdk/redis"
+	"github.com/adiatma85/own-go-sdk/sql"
 	"github.com/adiatma85/url-shortener/src/business/entity"
-	"github.com/adiatma85/url-shortener/src/utils/querybuilder"
-	"gorm.io/gorm"
 )
 
-// Function goes here
 type Interface interface {
-	Create(ctx context.Context, newUser entity.User) (entity.User, error)
-	GetList(ctx context.Context, userParam entity.UserParam) ([]entity.User, error)
-	Get(ctx context.Context, userParam entity.UserParam) (entity.User, error)
-	Update(ctx context.Context, userParam entity.UserParam, updateParam entity.User) (entity.User, error)
-	Delete(ctx context.Context, userParam entity.UserParam) error
+	Create(ctx context.Context, userParam entity.CreateUserParam) (entity.User, error)
+	Get(ctx context.Context, params entity.UserParam) (entity.User, error)
+	GetList(ctx context.Context, params entity.UserParam) ([]entity.User, *entity.Pagination, error)
+	Update(ctx context.Context, updateParam entity.UpdateUserParam, selectParam entity.UserParam) error
+}
+
+type InitParam struct {
+	Log   log.Interface
+	Db    sql.Interface
+	Json  parser.JSONInterface
+	Redis redis.Interface
 }
 
 type user struct {
-	db *gorm.DB
-	qb querybuilder.Interface
-	// Log
-	// Redis
-	// JSON Parser
+	log   log.Interface
+	db    sql.Interface
+	json  parser.JSONInterface
+	redis redis.Interface
 }
 
-func Init(db *gorm.DB, qb querybuilder.Interface) Interface {
+func Init(param InitParam) Interface {
 	u := &user{
-		db: db,
-		qb: qb,
+		log:   param.Log,
+		db:    param.Db,
+		json:  param.Json,
+		redis: param.Redis,
 	}
 
 	return u
 }
 
-// Must return new user instance and error
-func (u *user) Create(ctx context.Context, newUser entity.User) (entity.User, error) {
-	result := u.db.Create(&newUser)
-	return newUser, result.Error
-}
+func (u *user) Create(ctx context.Context, userParam entity.CreateUserParam) (entity.User, error) {
+	user := entity.User{}
 
-// Must return a user and an error if occured
-func (u *user) GetList(ctx context.Context, userParam entity.UserParam) ([]entity.User, error) {
-	users := []entity.User{}
-	queryBuilder := u.qb.ProcessPagination(ctx, userParam.PaginationParam)
+	tx, err := u.db.Leader().BeginTx(ctx, "txcUser", sql.TxOptions{})
+	if err != nil {
+		return user, errors.NewWithCode(codes.CodeSQLTxBegin, err.Error())
+	}
+	defer tx.Rollback()
 
-	result := queryBuilder.Model(&entity.User{}).Where(userParam).Find(&users)
-
-	if result.Error != nil {
-		return []entity.User{}, result.Error
+	tx, user, err = u.createSQLUser(tx, userParam)
+	if err != nil {
+		return user, err
 	}
 
-	return users, nil
-}
+	if err = tx.Commit(); err != nil {
+		return user, errors.NewWithCode(codes.CodeSQLTxCommit, err.Error())
+	}
 
-func (u *user) Get(ctx context.Context, userParam entity.UserParam) (entity.User, error) {
-	user := entity.User{}
-	result := u.db.Model(&user).Where(userParam).First(&user)
-
-	if result.Error != nil {
-		return entity.User{}, result.Error
+	if err := u.deleteUserCache(ctx); err != nil {
+		u.log.Error(ctx, err)
 	}
 
 	return user, nil
 }
 
-func (u *user) Update(ctx context.Context, userParam entity.UserParam, updateParam entity.User) (entity.User, error) {
-	u.db.Model(&updateParam).Where(userParam).Updates(updateParam)
-	return u.Get(ctx, userParam)
+func (u *user) Get(ctx context.Context, params entity.UserParam) (entity.User, error) {
+	return u.getSQLUser(ctx, params)
 }
 
-func (u *user) Delete(ctx context.Context, userParam entity.UserParam) error {
-	return u.db.Model(&entity.User{}).Delete(userParam).Error
+func (u *user) GetList(ctx context.Context, params entity.UserParam) ([]entity.User, *entity.Pagination, error) {
+	return u.getSQLUserList(ctx, params)
+}
+
+func (u *user) Update(ctx context.Context, updateParam entity.UpdateUserParam, selectParam entity.UserParam) error {
+	return u.updateSQLUser(ctx, updateParam, selectParam)
 }

@@ -1,40 +1,67 @@
 package main
 
 import (
-	"fmt"
-
+	"github.com/adiatma85/own-go-sdk/configreader"
+	"github.com/adiatma85/own-go-sdk/instrument"
+	"github.com/adiatma85/own-go-sdk/jwtAuth"
+	"github.com/adiatma85/own-go-sdk/log"
+	"github.com/adiatma85/own-go-sdk/parser"
+	"github.com/adiatma85/own-go-sdk/redis"
+	"github.com/adiatma85/own-go-sdk/sql"
 	"github.com/adiatma85/url-shortener/src/business/domain"
-	"github.com/adiatma85/url-shortener/src/config"
-	"github.com/adiatma85/url-shortener/src/utils"
+	"github.com/adiatma85/url-shortener/src/business/usecase"
+	"github.com/adiatma85/url-shortener/src/handler"
+	"github.com/adiatma85/url-shortener/utils/config"
 )
 
-type AppConfig struct {
-	APP_NAME string `mapstructure:"APP_NAME"`
-	APP_PORT string `mapstructure:"APP_PORT"`
-	APP_KEY  string `mapstructure:"DB_DATABASE"`
+// @contact.name   Rahmadhani Lucky Adiatma
 
-	// Mysql Config
+// @securitydefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 
-}
+const (
+	configfile   string = "./etc/cfg/conf.json"
+	templatefile string = "./etc/tpl/conf.template.json"
+)
 
 func main() {
-	// fmt.Println("Teting jancok")
-	// Do the configuration
-	gormDB, err := config.Setup()
-	if err != nil {
-		// Log error
-		fmt.Println("log error")
-		return
-	}
+	// Build the config
+	// Assume the config is exist in the first place
 
-	// Utils init
-	util := utils.Init(gormDB)
+	// Read the Config first
+	cfg := config.Init()
+	configreader := configreader.Init(configreader.Options{
+		ConfigFile: configfile,
+	})
+	configreader.ReadConfig(&cfg)
 
-	// Domain init
-	_ = domain.Init(gormDB, util)
+	// init logger
+	log := log.Init(cfg.Log)
 
-	// Usecase init
+	// init the instrument
+	instr := instrument.Init(cfg.Instrument)
 
-	// Gin Init
+	// Init the DB
+	db := sql.Init(cfg.SQL, log, instr)
 
+	// init the parser
+	parsers := parser.InitParser(log, cfg.Parser)
+
+	// init the redis
+	cache := redis.Init(cfg.Redis, log)
+
+	// Init the jwt
+	jwt := jwtAuth.Init(cfg.JwtAuth)
+
+	// Init the domain
+	d := domain.Init(domain.InitParam{Log: log, Db: db, Json: parsers.JSONParser(), Redis: cache})
+
+	// Init the usecase
+	uc := usecase.Init(usecase.InitParam{Log: log, Dom: d})
+
+	// Init the GIN
+	rest := handler.Init(handler.InitParam{Conf: cfg.Gin, Json: parsers.JSONParser(), Log: log, Uc: uc, Instrument: instr, JwtAuth: jwt})
+
+	rest.Run()
 }

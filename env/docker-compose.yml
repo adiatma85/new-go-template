@@ -64,12 +64,6 @@ services:
     ports:
       - "6379:6379"
 
-  pushgateway:
-    image: weaveworks/prom-aggregation-gateway:latest
-    restart: on-failure
-    ports:
-      - 9091:80
-
   # elasticsearch :
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
   #   ports:

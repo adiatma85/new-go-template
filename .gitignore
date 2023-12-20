@@ -26,7 +26,9 @@ docs/swagger
 vendor/
 
 # Configuration File
-configuration.json
+etc/cfg/conf.yaml
+etc/cfg/conf.json
 
 # Environment Variables
 .env
+*/*.env
