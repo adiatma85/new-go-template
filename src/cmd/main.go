@@ -58,7 +58,7 @@ func main() {
 	d := domain.Init(domain.InitParam{Log: log, Db: db, Json: parsers.JSONParser(), Redis: cache})
 
 	// Init the usecase
-	uc := usecase.Init(usecase.InitParam{Log: log, Dom: d})
+	uc := usecase.Init(usecase.InitParam{Log: log, Dom: d, JwtAuth: jwt})
 
 	// Init the GIN
 	rest := handler.Init(handler.InitParam{Conf: cfg.Gin, Json: parsers.JSONParser(), Log: log, Uc: uc, Instrument: instr, JwtAuth: jwt})

@@ -11,7 +11,8 @@ type User struct {
 	Email       string      `db:"email" json:"email"`
 	Username    string      `db:"username" json:"username"`
 	Password    string      `db:"password" json:"-"`
-	DisplayName string      `db:"display_name" json:"display_name"`
+	DisplayName string      `db:"display_name" json:"displayName"`
+	Status      null.Int64  `db:"status" json:"status" swaggertype:"integer"`
 	CreatedAt   null.Time   `db:"created_at" json:"createdAt" swaggertype:"string" example:"2022-06-21T10:32:29Z"`
 	CreatedBy   null.String `db:"created_by" json:"createdBy" swaggertype:"string"`
 	UpdatedAt   null.Time   `db:"updated_at" json:"updatedAt" swaggertype:"string" example:"2022-06-21T10:32:29Z"`
@@ -39,20 +40,32 @@ type UserParam struct {
 }
 
 type CreateUserParam struct {
-	Email           string      `json:"email"`
-	Username        string      `json:"username"`
-	Password        string      `json:"password"`
-	ConfirmPassword string      `json:"confirmPassword"`
-	DisplayName     string      `json:"display_name"`
+	Email           string      `db:"email" json:"email"`
+	Username        string      `db:"username" json:"username"`
+	Password        string      `db:"password" json:"password"`
+	ConfirmPassword string      `db:"-" json:"confirmPassword"`
+	DisplayName     string      `db:"display_name" json:"displayName"`
 	CreatedBy       null.String `json:"-" db:"created_by" swaggertype:"string"`
 }
 
 type UpdateUserParam struct {
 	Username    string      `param:"username" db:"username" json:"username"`
-	Password    string      `param:"password" db:"password" json:"password"`
 	DisplayName string      `param:"display_name" db:"display_name" json:"displayName"`
+	Password    string      `param:"password" db:"password" json:"password"`
 	Status      null.Int64  `db:"status" json:"-" swaggertype:"integer"`
 	UpdatedBy   null.String `db:"updated_by" json:"-" swaggertype:"string"`
 	DeletedAt   null.Time   `db:"deleted_at" json:"-" swaggertype:"string" example:"2022-06-21T10:32:29Z"`
 	DeletedBy   null.String `db:"deleted_by" json:"-" swaggertype:"string"`
+}
+
+type UserLoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type UserLoginResponse struct {
+	Email       string `json:"email"`
+	DisplayName string `json:"displayName"`
+	AccessToken string `json:"accessToken"`
+	ExpiresIn   int64  `json:"expiresIn"`
 }

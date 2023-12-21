@@ -180,6 +180,14 @@ func (r *rest) Ping(ctx *gin.Context) {
 	r.httpRespSuccess(ctx, codes.CodeSuccess, resp, nil)
 }
 
+func (r *rest) DummyLogin(ctx *gin.Context) {
+	// conf := redactFirebaseAccountKey(r.configreader.AllSettings())
+
+	ctx.HTML(http.StatusOK, "login.tmpl", gin.H{
+		// "config": conf,
+	})
+}
+
 func (r *rest) addFieldsToContext(ctx *gin.Context) {
 	reqid := ctx.GetHeader(header.KeyRequestID)
 	if reqid == "" {
@@ -245,7 +253,7 @@ func (r *rest) verifyUserAuth(ctx *gin.Context) (entity.User, error) {
 
 	jwtUer, err := r.jwtAuth.ValidateToken(token)
 	if err != nil {
-		return user, err
+		return entity.User{}, errors.NewWithCode(codes.CodeUnauthorized, "empty token")
 	}
 
 	user, err = r.uc.User.Get(ctx.Request.Context(), entity.UserParam{

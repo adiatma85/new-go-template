@@ -36,6 +36,5 @@ CREATE TABLE IF NOT EXISTS `url` (
   `updated_by` VARCHAR(255),
   `deleted_at`TIMESTAMP,
   `deleted_by` VARCHAR(255),
-  PRIMARY KEY (`id`),
-  UNIQUE (`username`)
-) ENGINE = INNODB COMMENT='User table, including delos employee';
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB COMMENT='url table';

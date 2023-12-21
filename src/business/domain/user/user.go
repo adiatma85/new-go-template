@@ -6,6 +6,7 @@ import (
 	"github.com/adiatma85/own-go-sdk/codes"
 	"github.com/adiatma85/own-go-sdk/errors"
 	"github.com/adiatma85/own-go-sdk/log"
+	"github.com/adiatma85/own-go-sdk/null"
 	"github.com/adiatma85/own-go-sdk/parser"
 	"github.com/adiatma85/own-go-sdk/redis"
 	"github.com/adiatma85/own-go-sdk/sql"
@@ -66,7 +67,9 @@ func (u *user) Create(ctx context.Context, userParam entity.CreateUserParam) (en
 		u.log.Error(ctx, err)
 	}
 
-	return user, nil
+	return u.Get(ctx, entity.UserParam{
+		ID: null.Int64From(user.ID),
+	})
 }
 
 func (u *user) Get(ctx context.Context, params entity.UserParam) (entity.User, error) {

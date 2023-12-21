@@ -7,8 +7,11 @@ replace github.com/adiatma85/own-go-sdk => ../own-sdk
 require (
 	github.com/adiatma85/own-go-sdk v0.1.5
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
+	github.com/swaggo/gin-swagger v1.3.2
 	github.com/swaggo/swag v1.16.2
 	gorm.io/gorm v1.24.3
+	golang.org/x/crypto v0.14.0
 )
 
 require (
@@ -36,7 +39,6 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	golang.org/x/arch v0.5.0 // indirect
-	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/net v0.16.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

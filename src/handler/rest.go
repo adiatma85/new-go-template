@@ -14,10 +14,13 @@ import (
 	"github.com/adiatma85/own-go-sdk/jwtAuth"
 	"github.com/adiatma85/own-go-sdk/log"
 	"github.com/adiatma85/own-go-sdk/parser"
+	"github.com/adiatma85/url-shortener/docs/swagger"
 	"github.com/adiatma85/url-shortener/src/business/usecase"
 	"github.com/adiatma85/url-shortener/utils/config"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 const (
@@ -147,6 +150,8 @@ func (r *rest) Run() {
 func (r *rest) Register() {
 	// server health and testing purpose
 	r.http.GET("/ping", r.Ping)
+	r.registerSwaggerRoutes()
+	r.registerDummyRoutes()
 
 	// Set Common Middlewares
 	commonPublicMiddlewares := gin.HandlersChain{
@@ -154,16 +159,53 @@ func (r *rest) Register() {
 	}
 
 	commonPrivateMiddlewares := gin.HandlersChain{
-		r.addFieldsToContext, r.BodyLogger, r.VerifyUser,
+		r.addFieldsToContext, r.BodyLogger,
+		r.VerifyUser,
 	}
 
 	// public api
 	publicv1 := r.http.Group("/public/v1/", commonPublicMiddlewares...)
-	publicv1.POST("/register", func(ctx *gin.Context) {})
+	publicv1.POST("/register", r.RegisterNewUserWithoutToken)
+
+	// auth api
+	authv1 := r.http.Group("/auth/v1", commonPublicMiddlewares...)
+	authv1.POST("/login", r.SignInWithPassword)
 
 	// private api
 	v1 := r.http.Group("/v1/", commonPrivateMiddlewares...)
 
 	// user management admin api
-	v1.GET("/admin/user", func(ctx *gin.Context) {})
+	v1.GET("/admin/user", r.GetListUser)
+}
+
+func (r *rest) registerSwaggerRoutes() {
+	if r.conf.Swagger.Enabled {
+		swagger.SwaggerInfo.Title = r.conf.Meta.Title
+		swagger.SwaggerInfo.Description = r.conf.Meta.Description
+		swagger.SwaggerInfo.Version = r.conf.Meta.Version
+		swagger.SwaggerInfo.Host = r.conf.Meta.Host
+		swagger.SwaggerInfo.BasePath = r.conf.Meta.BasePath
+
+		swaggerAuth := gin.Accounts{
+			r.conf.Swagger.BasicAuth.Username: r.conf.Swagger.BasicAuth.Password,
+		}
+
+		r.http.GET(fmt.Sprintf("%s/*any", r.conf.Swagger.Path),
+			gin.BasicAuthForRealm(swaggerAuth, "Restricted"),
+			ginSwagger.WrapHandler(swaggerfiles.Handler))
+	}
+}
+
+func (r *rest) registerDummyRoutes() {
+	if r.conf.Dummy.Enabled {
+		// load login page to gin
+
+		r.http.LoadHTMLFiles(
+			"./docs/templates/login.html",
+		)
+
+		dummyGroup := r.http.Group(r.conf.Dummy.Path)
+		fmt.Println(dummyGroup)
+		dummyGroup.GET("/login", r.DummyLogin)
+	}
 }

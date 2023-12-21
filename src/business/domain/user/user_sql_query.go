@@ -13,8 +13,6 @@ const (
 	    password,
 	    display_name,
 	    status,
-	    flag,
-	    meta,
 	    created_at,
 	    created_by,
 	    updated_at,
