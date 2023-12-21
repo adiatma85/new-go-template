@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"github.com/adiatma85/new-go-template/src/business/entity"
 	"github.com/adiatma85/own-go-sdk/codes"
-	"github.com/adiatma85/url-shortener/src/business/entity"
 	"github.com/gin-gonic/gin"
 )
 

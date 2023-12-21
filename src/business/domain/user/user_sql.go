@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/adiatma85/new-go-template/src/business/entity"
 	"github.com/adiatma85/own-go-sdk/codes"
 	"github.com/adiatma85/own-go-sdk/errors"
 	"github.com/adiatma85/own-go-sdk/query"
 	"github.com/adiatma85/own-go-sdk/redis"
 	"github.com/adiatma85/own-go-sdk/sql"
-	"github.com/adiatma85/url-shortener/src/business/entity"
 )
 
 func (u *user) createSQLUser(tx sql.CommandTx, v entity.CreateUserParam) (sql.CommandTx, entity.User, error) {

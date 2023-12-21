@@ -1,4 +1,4 @@
-module github.com/adiatma85/url-shortener
+module github.com/adiatma85/new-go-template
 
 go 1.21
 
@@ -10,7 +10,6 @@ require (
 	github.com/swaggo/gin-swagger v1.3.2
 	github.com/swaggo/swag v1.16.2
 	golang.org/x/crypto v0.14.0
-	gorm.io/gorm v1.24.3
 )
 
 require (
@@ -55,8 +54,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.4.0
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/jinzhu/inflection v1.0.0 // indirect
-	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmoiron/sqlx v1.3.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/lib/pq v1.10.9 // indirect
