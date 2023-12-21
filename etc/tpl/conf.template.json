@@ -1,0 +1,367 @@
+{
+    "Meta": {
+        "Title": "Aquahero",
+        "Description": "Delos Aquahero API Collection",
+        "Host": "{{ params.meta.host }}",
+        "Basepath": "/",
+        "Version": ""
+    },
+    "Gin": {
+        "Host": "{{ params.http.host }}",
+        "Port": "{{ params.http.port }}",
+        "Mode": "{{ params.http.mode }}",
+        "Timeout": "{{ params.http.timeout }}",
+        "ShutdownTimeout": "10s",
+        "LogRequest": "{{ params.http.log.request }}",
+        "LogResponse": "{{ params.http.log.response }}",
+        "CORS": {
+            "Mode": "{{ params.http.cors.mode }}"
+        },
+        "Meta": "$ref:#/Meta",
+        "Swagger": {
+            "Basicauth": {
+                "Password": "{{ creds.http.swagger.password }}",
+                "Username": "{{ creds.http.swagger.username }}"
+            },
+            "Enabled": "{{ params.http.swagger.enabled }}",
+            "Path": "{{ params.http.swagger.path }}"
+        },
+        "Platform": {
+            "BasicAuth": {
+                "Password": "{{ creds.http.platform.password }}",
+                "Username": "{{ creds.http.platform.username }}"
+            },
+            "Enabled": "{{ params.http.platform.enabled }}",
+            "Path": "{{ params.http.platform.path }}"
+        },
+        "Dummy": {
+            "Enabled": "{{ params.http.dummy.enabled }}",
+            "Path": "{{ params.http.dummy.path }}"
+        },
+        "Instrument": {
+            "Metrics": {
+                "Enabled": "{{ params.instrument.metrics.enabled }}",
+                "Path": "{{ params.http.instrument.metrics.path }}",
+                "BasicAuth": {
+                    "Username": "{{ creds.http.instrument.metrics.username }}",
+                    "Password": "{{ creds.http.instrument.metrics.password }}"
+                }
+            }
+        },
+        "Profiler": {
+            "Pprof": {
+                "Enabled": "{{ params.http.profiler.pprof.enabled }}",
+                "PathPrefix": "{{ params.http.profiler.pprof.pathprefix }}",
+                "BasicAuth": {
+                    "UserName": "{{ creds.http.profiler.pprof.username }}",
+                    "Password": "{{ creds.http.profiler.pprof.password }}"
+                }
+            }
+        }
+    },
+    "Log": {
+        "Level": "{{ params.log.level }}"
+    },
+    "Business": {
+        "Email": {
+            "ResetPassword": {
+                "AquaHero": {
+                    "SenderName": "{{ params.business.email.resetpassword.aquahero.sendername }}",
+                    "SenderEmail": "no-reply@delosaqua.com",
+                    "Subject": "[AquaHero][URGENT] Permintaan Penggantian Kata Sandi | Reset Password Request",
+                    "URL":"{{ params.business.email.resetpassword.aquahero.url }}",
+                    "TokenDuration":"24h",
+                    "Headers": {
+                        "X-PM-Message-Stream": "outbound",
+                        "X-PM-Tag": "reset-password"
+                    }
+                },
+                "AquaCheck": {
+                    "SenderName": "{{ params.business.email.resetpassword.aquacheck.sendername }}",
+                    "SenderEmail": "no-reply@delosaqua.com",
+                    "Subject": "[AquaCheck][URGENT] Permintaan Penggantian Kata Sandi | Reset Password Request",
+                    "URL":"{{ params.business.email.resetpassword.aquacheck.url }}",
+                    "TokenDuration":"24h",
+                    "Headers": {
+                        "X-PM-Message-Stream": "outbound",
+                        "X-PM-Tag": "reset-password"
+                    }
+                }
+            },
+            "DailyReport": {
+                "SenderName": "{{ params.business.email.dailyreport.sendername }}",
+                "SenderEmail": "no-reply@delosaqua.com",
+                "Subject": "[Daily Report]",
+                "URL": "{{ params.business.email.dailyreport.url }}",
+                "TotalPondPerPage": "{{ params.business.email.dailyreport.totalpondperpage }}",
+                "Headers": {
+                    "X-PM-Message-Stream": "outbound",
+                    "X-PM-Tag": "daily-report"
+                }
+            }
+        },
+        "Notification": {
+            "Slack": {
+                "AlertScienceChannelID": "{{ params.business.notification.slack.alertsciencechannelid }}",
+                "AlertSandboxChannelID": "{{ params.business.notification.slack.alertsandboxchannelid }}",
+                "AlertScienceGroupID": "{{ params.business.notification.slack.alertsciencegroupid }}",
+                "AlertTechGroupID": "{{ params.business.notification.slack.alerttechgroupid }}",
+                "AlertMobileInputChannelID": "{{ params.business.notification.slack.alertmobileinputchannelid }}",
+                "AlertTambakHOID": "{{ params.business.notification.slack.alerttambakhoid }}",
+                "AlertLabHOID": "{{ params.business.notification.slack.alertlabhoid }}"
+            }
+        },
+        "Recommendation": {
+            "BaseUrl": "{{ params.business.recommendation.baseurl }}",
+            "FarmRecommendation": "/abw/predict/",
+            "HarvestPrediction": "/python/harvest/v2/",
+            "FeedModel": "/total_feed/predict/"
+        },
+        "Outbox":{
+            "MaxScanLimit": "10",
+            "MaxAttempt": "3"
+        },
+        "PDFGenerator":{
+            "Host": "{{ params.business.pdfgenerator.host }}"
+        }
+    },
+    "SQL": {
+        "UseInstrument": "{{ params.instrument.metrics.enabled }}",
+        "LogQuery": "{{ params.sql.logquery }}",
+        "Driver": "{{ params.sql.driver }}",
+        "Follower": {
+            "Host": "{{ creds.sql.host }}",
+            "Port": "{{ creds.sql.port }}",
+            "DB": "{{ creds.sql.database }}",
+            "User": "{{ creds.sql.username }}",
+            "Password": "{{ creds.sql.password }}",
+            "SSL": null,
+            "Schema": null,
+            "Options": {
+                "MaxLifeTime": "{{ params.sql.options.maxlifetime }}",
+                "MaxIdle": "{{ params.sql.options.maxidle }}",
+                "MaxOpen": "{{ params.sql.options.maxopen }}"
+             }
+        },
+        "Leader": {
+            "Host": "{{ creds.sql.host }}",
+            "Port": "{{ creds.sql.port }}",
+            "DB": "{{ creds.sql.database }}",
+            "User": "{{ creds.sql.username }}",
+            "Password": "{{ creds.sql.password }}",
+            "SSL": null,
+            "Schema": null,
+            "Options": {
+                "MaxLifeTime": "{{ params.sql.options.maxlifetime }}",
+                "MaxIdle": "{{ params.sql.options.maxidle }}",
+                "MaxOpen": "{{ params.sql.options.maxopen }}"
+             }
+        }
+    },
+    "Parser": {
+        "JSONOptions": {
+            "Config": "default",
+            "IndentionStep": "0",
+            "MarshalFloatWith6Digits": false,
+            "EscapeHTML": true,
+            "SortMapKeys": false,
+            "UseNumber": true,
+            "DisallowUnknownFields": false,
+            "TagKey": "json",
+            "OnlyTaggedField": true,
+            "ValidateJSONRawMessage": true,
+            "ObjectFieldMustBeSimpleString": false,
+            "CasesenSitive": true,
+            "Schema": {
+                "create_cycle": "file://./docs/schema/create_cycle.schema.json",
+                "create_pond": "file://./docs/schema/create_pond.schema.json",
+                "register_user": "file://./docs/schema/register_user.schema.json",
+                "create_calibration": "file://./docs/schema/create_calibration.schema.json",
+                "create_calibration_abs": "file://./docs/schema/create_calibration_abs.schema.json",
+                "create_pond_disease": "file://./docs/schema/create_pond_disease.schema.json",
+                "create_other_plankton": "file://./docs/schema/create_other_plankton.schema.json",
+                "create_report_recipient": "file://./docs/schema/create_report_recipient.schema.json",
+                "create_farm_product": "file://./docs/schema/create_farm_product.schema.json",
+                "create_vendor": "file://./docs/schema/create_vendor.schema.json",
+                "update_farm_product": "file://./docs/schema/update_farm_product.schema.json"
+            }
+        },
+        "CSVOptions": {
+            "Separator": null,
+            "LazyQuotes": null
+        }
+    },
+    "Auth": {
+        "Firebase": {
+            "AccountKey": {
+                "Type": "{{ creds.auth.firebase.accountkey.type }}",
+                "ProjectID": "{{ creds.auth.firebase.accountkey.projectid }}",
+                "PrivateKeyID": "{{ creds.auth.firebase.accountkey.privatekeyid }}",
+                "PrivateKey": "{{ creds.auth.firebase.accountkey.privatekey }}",
+                "ClientEmail": "{{ creds.auth.firebase.accountkey.clientemail }}",
+                "ClientID": "{{ creds.auth.firebase.accountkey.clientid }}",
+                "AuthURI": "{{ creds.auth.firebase.accountkey.authuri }}",
+                "TokenURI": "{{ creds.auth.firebase.accountkey.tokenuri }}",
+                "AuthProviderx509CertURL": "{{ creds.auth.firebase.accountkey.authproviderx509certurl }}",
+                "Clientx509CertURL": "{{ creds.auth.firebase.accountkey.clientx509certurl }}"
+            },
+            "ApiKey": "{{ creds.auth.firebase.apikey }}",
+            "AuthDomain": "{{ creds.auth.firebase.authdomain }}",
+            "ProjectID": "{{ creds.auth.firebase.projectid }}",
+            "StorageBucket": "{{ creds.auth.firebase.storagebucket }}",
+            "MessagingSenderID": "{{ creds.auth.firebase.messagingsenderid }}",
+            "AppID": "{{ creds.auth.firebase.appid }}" 
+        }
+    },
+    "Messaging": {
+        "Firebase": {
+            "AccountKey": {
+                "Type": "{{ creds.auth.firebase.accountkey.type }}",
+                "ProjectID": "{{ creds.auth.firebase.accountkey.projectid }}",
+                "PrivateKeyID": "{{ creds.auth.firebase.accountkey.privatekeyid }}",
+                "PrivateKey": "{{ creds.auth.firebase.accountkey.privatekey }}",
+                "ClientEmail": "{{ creds.auth.firebase.accountkey.clientemail }}",
+                "ClientID": "{{ creds.auth.firebase.accountkey.clientid }}",
+                "AuthURI": "{{ creds.auth.firebase.accountkey.authuri }}",
+                "TokenURI": "{{ creds.auth.firebase.accountkey.tokenuri }}",
+                "AuthProviderx509CertURL": "{{ creds.auth.firebase.accountkey.authproviderx509certurl }}",
+                "Clientx509CertURL": "{{ creds.auth.firebase.accountkey.clientx509certurl }}"
+            },
+            "ApiKey": "{{ creds.auth.firebase.apikey }}",
+            "AuthDomain": "{{ creds.auth.firebase.authdomain }}",
+            "ProjectID": "{{ creds.auth.firebase.projectid }}",
+            "StorageBucket": "{{ creds.auth.firebase.storagebucket }}",
+            "MessagingSenderID": "{{ creds.auth.firebase.messagingsenderid }}",
+            "AppID": "{{ creds.auth.firebase.appid }}" 
+        }
+    },
+    "Storage": {
+        "AWSS3": {
+            "AccessKeyID": "{{ creds.storage.aws.s3.accesskey }}",
+            "BucketName": "{{ creds.storage.aws.s3.bucketname }}",
+            "Region": "{{ creds.storage.aws.s3.region }}",
+            "SecretAccessKey": "{{ creds.storage.aws.s3.secret }}",
+            "PresignDuration": "15m"
+        }
+    },
+    "Email": {
+        "SMTP": {
+            "Host": "{{ creds.email.smtp.host }}",
+            "Port": "{{ creds.email.smtp.port }}",
+            "Username": "{{ creds.email.smtp.username }}",
+            "Password": "{{ creds.email.smtp.password }}"
+        },
+        "Template": {
+            "FileDirectory": "./docs/templates"
+        }
+    },
+    "Instrument": {
+        "Metrics": {
+            "Enabled": "{{ params.instrument.metrics.enabled }}"
+        }
+    },
+    "Tracker":{
+        "Enabled": "{{ params.tracker.enabled }}",
+        "URL": "{{ params.tracker.pushgateway.url }}",
+        "Port": "{{ params.tracker.pushgateway.port }}",
+        "JobName": "tracker",
+        "Timeout": "3s"
+    },
+    "Redis": {
+        "Protocol": "{{ creds.redis.protocol }}",
+        "Host": "{{ creds.redis.host }}",
+        "Port": "{{ creds.redis.port }}",
+        "Username": "{{ creds.redis.username }}",
+        "Password": "{{ creds.redis.password }}",
+        "TLS": {
+            "Enabled": "{{ params.redis.tls.enabled }}",
+            "InsecureSkipVerify": "{{ params.redis.tls.insecureskipverify }}"
+        }
+    },
+    "Scheduler": {
+        "BatchProcessOutboxMonitoringTreatment": {
+            "Name": "BatchProcessOutboxMonitoringTreatment",
+            "Enabled": "{{ params.scheduler.batchprocessoutboxmonitoringtreatment.enabled }}",
+            "Interval": "61s",
+            "TimeType": "interval"
+        },
+        "BatchProcessOutboxFarmTechnician": {
+            "Name": "BatchProcessOutboxFarmTechnician",
+            "Enabled": "{{ params.scheduler.batchprocessoutboxfarmtechnician.enabled }}",
+            "Interval": "67s",
+            "TimeType": "interval"
+        },
+        "BatchProcessOutboxLabAnalyst": {
+            "Name": "BatchProcessOutboxLabAnalyst",
+            "Enabled": "{{ params.scheduler.batchprocessoutboxlabanalyst.enabled }}",
+            "Interval": "71s",
+            "TimeType": "interval"
+        },
+        "BatchProcessOutboxProductionPlan": {
+            "Name": "BatchProcessOutboxProductionPlan",
+            "Enabled": "{{ params.scheduler.batchprocessoutboxprodplan.enabled }}",
+            "Interval": "600s",
+            "TimeType": "interval"
+        },
+        "SendDailyReportEmail": {
+            "Name": "SendDailyReportEmail",
+            "Enabled": "{{ params.scheduler.senddailyreportemail.enabled }}",
+            "TimeType": "daily", 
+            "ScheduledTime": "{{ params.scheduler.senddailyreportemail.scheduledtime }}"
+        },
+        "NewSendDailyReportEmail": {
+            "Name": "NewSendDailyReportEmail",
+            "Enabled": "{{ params.scheduler.newsenddailyreportemail.enabled }}",
+            "TimeType": "daily", 
+            "ScheduledTime": "{{ params.scheduler.newsenddailyreportemail.scheduledtime }}"
+        },
+        "TriggerHarvestRecommendation": {
+            "Name": "TriggerHarvestRecommendation",
+            "Enabled": "{{ params.scheduler.triggerharvestrecommendation.enabled }}",
+            "Interval": "37s",
+            "TimeType": "interval"
+        },
+        "TriggerUpdatePondExpenses": {
+            "Name": "TriggerUpdatePondExpenses",
+            "Enabled": "{{ params.scheduler.triggerupdatepondexpenses.enabled }}",
+            "Interval": "43s",
+            "TimeType": "interval"
+        },
+        "TriggerDailyRecommendation": {
+            "Name": "TriggerDailyRecommendation",
+            "Enabled": "{{ params.scheduler.triggerdailyrecommendation.enabled }}",
+            "Interval": "41s",
+            "TimeType": "interval"
+        },
+        "SendFarmSummaryReport": {
+            "Name": "SendFarmSummaryReport",
+            "Enabled": "{{ params.scheduler.sendfarmsummaryreport.enabled }}",
+            "TimeType": "daily",
+            "ScheduledTime": "{{ params.scheduler.sendfarmsummaryreport.scheduledtime }}"
+        },
+        "SendParameterAlertReport": {
+            "Name": "SendParameterAlertReport",
+            "Enabled": "{{ params.scheduler.sendparameteralertreport.enabled }}",
+            "TimeType": "daily",
+            "ScheduledTime": "{{ params.scheduler.sendparameteralertreport.scheduledtime }}"
+        }
+    },
+    "Slack": {
+        "Enabled": "{{ params.slack.enabled }}",
+        "Token": "{{ creds.slack.token }}"
+    },
+    "FeatureFlag": {
+        "Enabled": "{{ params.featureflag.enabled }}",
+        "PollingInterval": "{{ params.featureflag.pollinginterval }}"
+    },
+    "Translator":{
+        "FallbackLanguageID": "en",
+        "SupportedLanguageIDs": ["id"],
+	    "TranslationDir": "./docs/translation"
+    },
+    "RateLimiter":{
+        "Enabled": "{{ params.ratelimiter.enabled }}",
+        "Period": "{{ params.ratelimiter.period }}",
+        "Limit": "{{ params.ratelimiter.limit }}"
+    }
+}
