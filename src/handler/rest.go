@@ -9,14 +9,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/adiatma85/new-go-template/docs/swagger"
+	"github.com/adiatma85/new-go-template/src/business/usecase"
+	"github.com/adiatma85/new-go-template/utils/config"
 	"github.com/adiatma85/own-go-sdk/appcontext"
 	"github.com/adiatma85/own-go-sdk/instrument"
 	"github.com/adiatma85/own-go-sdk/jwtAuth"
 	"github.com/adiatma85/own-go-sdk/log"
 	"github.com/adiatma85/own-go-sdk/parser"
-	"github.com/adiatma85/url-shortener/docs/swagger"
-	"github.com/adiatma85/url-shortener/src/business/usecase"
-	"github.com/adiatma85/url-shortener/utils/config"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -173,6 +173,11 @@ func (r *rest) Register() {
 
 	// private api
 	v1 := r.http.Group("/v1/", commonPrivateMiddlewares...)
+
+	// user
+	v1.GET("/user/:user_id", r.GetUserByID)
+	v1.PUT("/user/:user_id", r.UpdateUser)
+	v1.DELETE("/user/:user_id", r.DeleteUser)
 
 	// user management admin api
 	v1.GET("/admin/user", r.GetListUser)

@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE = INNODB COMMENT='User table';
 
 -- Create Table Urls
+-- For example from url shortener
 DROP TABLE IF EXISTS `url`;
 CREATE TABLE IF NOT EXISTS `url` (
   `id` INT NOT NULL AUTO_INCREMENT,

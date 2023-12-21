@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"time"
 
+	userDom "github.com/adiatma85/new-go-template/src/business/domain/user"
+	"github.com/adiatma85/new-go-template/src/business/entity"
 	"github.com/adiatma85/own-go-sdk/codes"
 	"github.com/adiatma85/own-go-sdk/errors"
 	"github.com/adiatma85/own-go-sdk/jwtAuth"
 	"github.com/adiatma85/own-go-sdk/log"
 	"github.com/adiatma85/own-go-sdk/null"
 	"github.com/adiatma85/own-go-sdk/query"
-	userDom "github.com/adiatma85/url-shortener/src/business/domain/user"
-	"github.com/adiatma85/url-shortener/src/business/entity"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )

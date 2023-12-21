@@ -1,11 +1,11 @@
 package domain
 
 import (
+	"github.com/adiatma85/new-go-template/src/business/domain/user"
 	"github.com/adiatma85/own-go-sdk/log"
 	"github.com/adiatma85/own-go-sdk/parser"
 	"github.com/adiatma85/own-go-sdk/redis"
 	"github.com/adiatma85/own-go-sdk/sql"
-	"github.com/adiatma85/url-shortener/src/business/domain/user"
 )
 
 type Domain struct {

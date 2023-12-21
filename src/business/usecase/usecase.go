@@ -1,10 +1,10 @@
 package usecase
 
 import (
+	"github.com/adiatma85/new-go-template/src/business/domain"
+	"github.com/adiatma85/new-go-template/src/business/usecase/user"
 	"github.com/adiatma85/own-go-sdk/jwtAuth"
 	"github.com/adiatma85/own-go-sdk/log"
-	"github.com/adiatma85/url-shortener/src/business/domain"
-	"github.com/adiatma85/url-shortener/src/business/usecase/user"
 )
 
 type Usecase struct {

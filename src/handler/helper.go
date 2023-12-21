@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/adiatma85/new-go-template/src/business/entity"
 	"github.com/adiatma85/own-go-sdk/appcontext"
 	"github.com/adiatma85/own-go-sdk/codes"
 	"github.com/adiatma85/own-go-sdk/errors"
@@ -13,7 +14,6 @@ import (
 	"github.com/adiatma85/own-go-sdk/jwtAuth"
 	"github.com/adiatma85/own-go-sdk/null"
 	"github.com/adiatma85/own-go-sdk/query"
-	"github.com/adiatma85/url-shortener/src/business/entity"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/google/uuid"
@@ -253,7 +253,7 @@ func (r *rest) verifyUserAuth(ctx *gin.Context) (entity.User, error) {
 
 	jwtUer, err := r.jwtAuth.ValidateToken(token)
 	if err != nil {
-		return entity.User{}, errors.NewWithCode(codes.CodeUnauthorized, "empty token")
+		return entity.User{}, errors.NewWithCode(codes.CodeUnauthorized, "token invalid or token expire")
 	}
 
 	user, err = r.uc.User.Get(ctx.Request.Context(), entity.UserParam{
@@ -263,7 +263,7 @@ func (r *rest) verifyUserAuth(ctx *gin.Context) (entity.User, error) {
 		},
 	})
 	if err != nil {
-		return user, err
+		return entity.User{}, errors.NewWithCode(codes.CodeUnauthorized, "user does not exist")
 	}
 
 	return user, nil

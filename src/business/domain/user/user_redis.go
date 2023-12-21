@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
+	"github.com/adiatma85/new-go-template/src/business/entity"
 	"github.com/adiatma85/own-go-sdk/codes"
 	"github.com/adiatma85/own-go-sdk/errors"
-	"github.com/adiatma85/url-shortener/src/business/entity"
 )
 
 const (

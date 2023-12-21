@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 
+	"github.com/adiatma85/new-go-template/src/business/entity"
 	"github.com/adiatma85/own-go-sdk/codes"
 	"github.com/adiatma85/own-go-sdk/errors"
 	"github.com/adiatma85/own-go-sdk/log"
@@ -10,7 +11,6 @@ import (
 	"github.com/adiatma85/own-go-sdk/parser"
 	"github.com/adiatma85/own-go-sdk/redis"
 	"github.com/adiatma85/own-go-sdk/sql"
-	"github.com/adiatma85/url-shortener/src/business/entity"
 )
 
 type Interface interface {

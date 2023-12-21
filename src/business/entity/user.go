@@ -67,5 +67,4 @@ type UserLoginResponse struct {
 	Email       string `json:"email"`
 	DisplayName string `json:"displayName"`
 	AccessToken string `json:"accessToken"`
-	ExpiresIn   int64  `json:"expiresIn"`
 }
