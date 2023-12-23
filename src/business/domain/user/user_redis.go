@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	getUserByIdKey    = `aquahero:user:get:%s`
-	deleteUserPattern = `aquahero:user:*`
+	getUserByIdKey    = `project:user:get:%s`
+	deleteUserPattern = `project:user:*`
 )
 
 func (u *user) upsertCache(ctx context.Context, key string, value entity.User, expTime time.Duration) error {
