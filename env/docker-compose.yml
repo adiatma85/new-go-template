@@ -1,14 +1,8 @@
 version: '3'
 services:
-  # mongo:
-  #   image: mongo
-  #   restart: on-failure
-  #   ports:
-  #     - "27017:27017"
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: root
-  #     MONGO_INITDB_ROOT_PASSWORD: password
 
+  # Always Remember to change the mysql database name according to the project name
+  # Mysql
   mysql:
     # use this for mac
     platform: linux/amd64
@@ -28,8 +22,10 @@ services:
       - "./storage/mysql/data:/var/lib/mysql"
     environment:
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: template_project
       MYSQL_TCP_PORT: 3306
 
+  # Redis
   redis:
     image: redis:6
     restart: on-failure
@@ -42,12 +38,15 @@ services:
     ports:
       - "6379:6379"
 
-  # elasticsearch :
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+  # Main application in here
+  # Always remember to change this according to your project name
+  # gg-project:
+  #   image: adiatma85/gg-project:latest
+  #   depends_on:
+  #     - redis
   #   ports:
-  #     - "9201:9200"
-  #   environment:
-  #       - discovery.type=single-node
-  #       - cluster.name=elasticsearch
-  #   volumes:
-  #       - ./storage/es/data:/usr/share/elasticsearch/data
+  #     - "8080:8080"
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 1
+  #   restart: on-failure
