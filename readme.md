@@ -87,3 +87,28 @@ Project Structure and Explanation is below:
 ![Alt text](./etc/images/running_terminal.png)
 
 7. You can access the swagger endpoint in `{host}:{port}/swagger/index.html`
+
+
+## Secret that must be configured within the github repo
+1. CADDY_HOST_NAME --> Domain Name for Caddy
+2. DATABASE_DRIVER --> Database driver for example: MySQL or Postgres
+3. DATABASE_HOST --> Database Host or IP Address
+4. DATABASE_NAME --> Database Name
+5. DATABASE_PASSWORD --> Database Password
+6. DATABASE_PORT --> Database Port
+7. DATABASE_USER --> Database User
+8. DEPLOY_FILE --> Deploy Folder in VPS Host
+9. DISCORD_AVATAR --> Discord Avatar for CICD Notification
+10. DISCORD_USERNAME --> Discord Username for CICD Notification
+11. DISCORD_WEBHOOK --> Discord Webhook for CICD Notification
+12. DOCKERHUB_TOKEN --> Dockerhub token 
+13. DOCKERHUB_USERNAME --> Dockerhub username
+14. ENV_MODE --> ENV Mode for App (debug)
+15. HOST --> What is the host for VPS (localhost)
+16. PORT --> What is the port for (8080)
+17. REDIS_HOST --> What is the redis host
+18. TOKEN_GITHUB --> Github Token
+19. VPS_HOST --> What is the VPS IP Address
+20. VPS_PASSWORD --> What is the VPS Password
+21. VPS_PORT --> What is the SSH Port for VPS
+22. VPS_USERNAME --> What is the SSH Username for VPS
