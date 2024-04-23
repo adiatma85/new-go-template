@@ -15,6 +15,7 @@ import (
 )
 
 // @contact.name   Rahmadhani Lucky Adiatma
+// @contact.email  adiatma85@gmail.com
 
 // @securitydefinitions.apikey BearerAuth
 // @in header
