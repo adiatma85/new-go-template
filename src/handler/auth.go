@@ -57,3 +57,23 @@ func (r *rest) SignInWithPassword(ctx *gin.Context) {
 
 	r.httpRespSuccess(ctx, codes.CodeSuccess, authInfo, nil)
 }
+
+// @Summary Sign In With Refresh Token
+// @Description This endpoint will sign in user with refresh token
+// @Tags Auth
+// @Security BearerAuth
+// @Produce json
+// @Success 200 {object} entity.HTTPResp{data=entity.UserLoginResponse{}}
+// @Failure 400 {object} entity.HTTPResp{}
+// @Failure 404 {object} entity.HTTPResp{}
+// @Failure 500 {object} entity.HTTPResp{}
+// @Router /auth/v1/refresh-token [GET]
+func (r *rest) RefreshToken(ctx *gin.Context) {
+	authInfo, err := r.uc.User.RefreshToken(ctx.Request.Context())
+	if err != nil {
+		r.httpRespError(ctx, err)
+		return
+	}
+
+	r.httpRespSuccess(ctx, codes.CodeSuccess, authInfo, nil)
+}

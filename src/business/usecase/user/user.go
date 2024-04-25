@@ -27,12 +27,12 @@ type Interface interface {
 	GetSelfProfile(ctx context.Context) (entity.User, error)
 	SelfDelete(ctx context.Context) error
 	ChangePassword(ctx context.Context, changePasswordReq entity.ChangePasswordRequest) error
+	RefreshToken(ctx context.Context) (entity.UserLoginResponse, error)
 
 	// Improvement kedepannya
 	// CheckPassword(ctx context.Context, params entity.UserCheckPasswordParam, userParam entity.UserParam) (entity.HTTPMessage, error)
 	// ChangePassword(ctx context.Context, passwordChangeParam entity.UserChangePasswordParam, userParam entity.UserParam) (entity.HTTPMessage, error)
 	// Activate(ctx context.Context, selectParam entity.UserParam) error
-	// RefreshToken(ctx context.Context, param entity.UserRefreshTokenParam) (entity.RefreshTokenResponse, error)
 }
 
 type InitParam struct {
@@ -84,6 +84,9 @@ func (u *user) CreateWithoutAuthInfo(ctx context.Context, req entity.CreateUserP
 
 	// Hash the password in here
 	req.Password, err = u.getHashPassowrd(req.Password)
+	if err != nil {
+		return result, err
+	}
 
 	return u.user.Create(ctx, req)
 }
@@ -195,10 +198,17 @@ func (u *user) SignInWithPassword(ctx context.Context, req entity.UserLoginReque
 		return entity.UserLoginResponse{}, err
 	}
 
+	// Create the JWT Refresh token in here
+	refreshToken, err := u.jwtAuth.CreateRefreshToken(user.ConvertToAuthUser())
+	if err != nil {
+		return entity.UserLoginResponse{}, err
+	}
+
 	result := entity.UserLoginResponse{
-		Email:       user.Email,
-		DisplayName: user.DisplayName,
-		AccessToken: accessToken,
+		Email:        user.Email,
+		DisplayName:  user.DisplayName,
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
 	}
 
 	return result, nil
@@ -266,6 +276,9 @@ func (u *user) ChangePassword(ctx context.Context, changePasswordReq entity.Chan
 			IsActive: true,
 		},
 	})
+	if err != nil {
+		return err
+	}
 
 	if u.checkHashPassword(userDn.Password, changePasswordReq.OldPassword) {
 		return errors.NewWithCode(codes.CodeUnauthorized, "credential does not match")
@@ -286,4 +299,34 @@ func (u *user) ChangePassword(ctx context.Context, changePasswordReq entity.Chan
 	}
 
 	return u.user.Update(ctx, updateParam, selectParam)
+}
+
+func (u *user) RefreshToken(ctx context.Context) (entity.UserLoginResponse, error) {
+	var (
+		result entity.UserLoginResponse
+	)
+
+	jwtUser, err := u.jwtAuth.GetUserAuthInfo(ctx)
+	if err != nil {
+		return result, err
+	}
+
+	// Generate access token in here
+	accessToken, err := u.jwtAuth.CreateAccessToken(jwtUser.User)
+	if err != nil {
+		return result, err
+	}
+
+	// Generate refresh token in here
+	refreshToken, err := u.jwtAuth.CreateRefreshToken(jwtUser.User)
+	if err != nil {
+		return result, err
+	}
+
+	result = entity.UserLoginResponse{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}
+
+	return result, nil
 }
