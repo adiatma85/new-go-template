@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	ginSwagger "github.com/adiatma85/dark-gin-swagger"
 	"github.com/adiatma85/new-go-template/docs/swagger"
 	"github.com/adiatma85/new-go-template/src/business/usecase"
 	"github.com/adiatma85/new-go-template/utils/config"
@@ -20,7 +21,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 const (
@@ -199,9 +199,10 @@ func (r *rest) registerSwaggerRoutes() {
 			r.conf.Swagger.BasicAuth.Username: r.conf.Swagger.BasicAuth.Password,
 		}
 
+		isDarkMode := ginSwagger.SetDarkMode(r.conf.Swagger.IsDarkMode)
 		r.http.GET(fmt.Sprintf("%s/*any", r.conf.Swagger.Path),
 			gin.BasicAuthForRealm(swaggerAuth, "Restricted"),
-			ginSwagger.WrapHandler(swaggerfiles.Handler))
+			ginSwagger.WrapHandler(swaggerfiles.Handler, isDarkMode))
 	}
 }
 
