@@ -8,6 +8,8 @@ import (
 	"github.com/adiatma85/own-go-sdk/sql"
 )
 
+// This comment used to test the action
+
 type Domain struct {
 	User user.Interface
 }
