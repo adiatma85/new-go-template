@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - develop
+      - main
 # Always change the name of dockerhub repositorey
 env:
   DOCKERHUB_REPOSITORY: adiatma85/template-project
