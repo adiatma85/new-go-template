@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/adiatma85/dark-gin-swagger v1.1.0
-	github.com/adiatma85/own-go-sdk v0.1.12
+	github.com/adiatma85/own-go-sdk v0.1.18
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/swag v1.16.2
