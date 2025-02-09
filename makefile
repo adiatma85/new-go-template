@@ -23,3 +23,15 @@ build-alpine:
 .PHONY: run
 run: swaggo build
 	@./build/app
+
+.PHONY: lint
+lint:
+	@`go env GOPATH`/bin/golangci-lint run
+
+.PHONY: lint-fast
+lint-fast:
+	@`go env GOPATH`/bin/golangci-lint run --fast
+
+.PHONY: lint-install
+lint-install:
+	@./utils/lint_install
