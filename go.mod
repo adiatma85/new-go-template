@@ -4,11 +4,11 @@ go 1.21
 
 require (
 	github.com/adiatma85/dark-gin-swagger v1.1.0
-	github.com/adiatma85/own-go-sdk v0.1.18
+	github.com/adiatma85/own-go-sdk v0.2.4
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/swag v1.16.2
-	golang.org/x/crypto v0.21.0
+	golang.org/x/crypto v0.26.0
 )
 
 require (
@@ -18,6 +18,7 @@ require (
 	github.com/bytedance/sonic v1.10.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
+	github.com/fatih/color v1.14.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
@@ -33,11 +34,14 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
+	github.com/nwidger/jsoncolor v0.3.2 // indirect
+	github.com/olekukonko/ts v0.0.0-20171002115256-78ecb04241c0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
+	go.mongodb.org/mongo-driver v1.17.2 // indirect
 	golang.org/x/arch v0.5.0 // indirect
-	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/tools v0.14.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
+	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
@@ -83,8 +87,8 @@ require (
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
-	golang.org/x/sys v0.18.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/sys v0.23.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
